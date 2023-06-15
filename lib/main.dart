@@ -11,7 +11,7 @@ class RockPaperScissorsApp extends StatelessWidget {
     return MaterialApp(
       title: 'Rock Paper Scissors',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
       home: RockPaperScissorsScreen(),
@@ -36,6 +36,7 @@ class _RockPaperScissorsScreenState extends State<RockPaperScissorsScreen> {
     createObjects();
   }
 
+  // Creating objects
   void createObjects() {
     for (int i = 0; i < 5; i++) {
       objects.add(RPSObject(type: RPSObjectType.Rock));
@@ -44,6 +45,7 @@ class _RockPaperScissorsScreenState extends State<RockPaperScissorsScreen> {
     }
   }
 
+  //Move objects
   void moveObjects() {
     setState(() {
       for (var object in objects) {
@@ -52,6 +54,7 @@ class _RockPaperScissorsScreenState extends State<RockPaperScissorsScreen> {
     });
   }
 
+  // Check is two object has collision
   void checkCollisions() {
     setState(() {
       for (int i = 0; i < objects.length - 1; i++) {
@@ -64,23 +67,24 @@ class _RockPaperScissorsScreenState extends State<RockPaperScissorsScreen> {
     });
   }
 
+  // Handling collisions
   void handleCollision(RPSObject object1, RPSObject object2) {
     if (object1.type == object2.type) {
-      object1.bounce();
-      object2.bounce();
+      object1.redirect();
+      object2.redirect();
     } else {
       RPSObjectType winnerType = getWinner(object1.type, object2.type);
       if (winnerType == object1.type) {
         objects.remove(object2);
-        object1.bounce();
+        object1.redirect();
       } else {
         objects.remove(object1);
-        object2.bounce();
+        object2.redirect();
       }
     }
   }
-  
 
+  // Cheking winner of collision
   RPSObjectType getWinner(RPSObjectType type1, RPSObjectType type2) {
     if ((type1 == RPSObjectType.Rock && type2 == RPSObjectType.Scissors) ||
         (type1 == RPSObjectType.Scissors && type2 == RPSObjectType.Paper) ||
@@ -151,6 +155,8 @@ class _RockPaperScissorsScreenState extends State<RockPaperScissorsScreen> {
 enum RPSObjectType { Rock, Paper, Scissors }
 
 class RPSObject {
+  // X and Y are postions
+  // directionX and directionY is direction that they want to move
   RPSObjectType type;
   double x = 0;
   double y = 0;
@@ -159,6 +165,7 @@ class RPSObject {
   double directionY = 0;
   Random random = Random();
 
+  // Initialize object
   RPSObject({required this.type}) {
     size = 50.0;
     x = random.nextDouble() * (400 - size);
@@ -167,6 +174,7 @@ class RPSObject {
     directionY = random.nextBool() ? 1.0 : -1.0;
   }
 
+  // Move object
   void move() {
     x += directionX * 5;
     y += directionY * 5;
@@ -180,18 +188,21 @@ class RPSObject {
     }
   }
 
+  // Checking is colliding with other object
   bool isCollidingWith(RPSObject other) {
     return x < other.x + other.size &&
         x + size > other.x &&
         y < other.y + other.size &&
         y + size > other.y;
   }
-
-  void bounce() {
+ 
+  // If has collisio, change the directions
+  void redirect() {
     directionX *= -1;
     directionY *= -1;
   }
 
+  // Get image of object
   Image getImage() {
     switch (type) {
       case RPSObjectType.Rock:
