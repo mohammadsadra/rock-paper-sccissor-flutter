@@ -109,7 +109,7 @@ class _RockPaperScissorsScreenState extends State<RockPaperScissorsScreen> {
           !isStarted
               ? TextButton(
                   onPressed: () {
-                    const duration = Duration(milliseconds: 500);
+                    const duration = Duration(milliseconds: 40);
                     Timer.periodic(duration, (timer) {
                       moveObjects();
                       checkCollisions();
@@ -127,30 +127,20 @@ class _RockPaperScissorsScreenState extends State<RockPaperScissorsScreen> {
       ),
       body: Container(
         color: Colors.white,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            const duration = Duration(milliseconds: 300);
-            Timer.periodic(duration, (timer) {
-              moveObjects();
-              checkCollisions();
-            });
-          },
-          child: Stack(
-            children: [
-              for (var object in objects)
-                Positioned(
-                  left: object.x,
-                  top: object.y,
-                  child: Container(
-                    width: object.size,
-                    height: object.size,
-                    color: Colors.transparent,
-                    child: object.getImage(),
-                  ),
+        child: Stack(
+          children: [
+            for (var object in objects)
+              Positioned(
+                left: object.x,
+                top: object.y,
+                child: Container(
+                  width: object.size,
+                  height: object.size,
+                  color: Colors.transparent,
+                  child: object.getImage(),
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );
@@ -172,6 +162,7 @@ class RPSObject {
 
   double width = Get.width;
   // -50 is for Noth in iPhones
+  
   double height = Get.height - AppBar().preferredSize.height - 50;
 
   // Initialize object
