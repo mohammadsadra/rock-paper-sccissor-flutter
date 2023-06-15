@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:rps/image.dart';
 
-void main() => runApp(const RockPaperScissorsApp());
+void main() => runApp(RockPaperScissorsApp());
 
 class RockPaperScissorsApp extends StatelessWidget {
-  const RockPaperScissorsApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,14 +14,12 @@ class RockPaperScissorsApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
-      home: const RockPaperScissorsScreen(),
+      home: RockPaperScissorsScreen(),
     );
   }
 }
 
 class RockPaperScissorsScreen extends StatefulWidget {
-  const RockPaperScissorsScreen({super.key});
-
   @override
   _RockPaperScissorsScreenState createState() =>
       _RockPaperScissorsScreenState();
@@ -104,7 +99,7 @@ class _RockPaperScissorsScreenState extends State<RockPaperScissorsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Rock Paper Scissors'),
+        title: Text('Rock Paper Scissors'),
         actions: [
           !isStarted
               ? TextButton(
@@ -130,7 +125,7 @@ class _RockPaperScissorsScreenState extends State<RockPaperScissorsScreen> {
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            const duration = Duration(milliseconds: 300);
+            const duration = Duration(milliseconds: 500);
             Timer.periodic(duration, (timer) {
               moveObjects();
               checkCollisions();
@@ -170,14 +165,11 @@ class RPSObject {
   double directionY = 0;
   Random random = Random();
 
-  double width = Get.width;
-  double height = Get.height - 50;
-
   // Initialize object
   RPSObject({required this.type}) {
     size = 50.0;
-    x = random.nextDouble() * (width - size);
-    y = random.nextDouble() * (height - size);
+    x = random.nextDouble() * (400 - size);
+    y = random.nextDouble() * (600 - size);
     directionX = random.nextBool() ? 1.0 : -1.0;
     directionY = random.nextBool() ? 1.0 : -1.0;
   }
@@ -187,11 +179,11 @@ class RPSObject {
     x += directionX * 5;
     y += directionY * 5;
 
-    if (x < 0 || x > width - size) {
+    if (x < 0 || x > 400 - size) {
       directionX *= -1;
     }
 
-    if (y < 0 || y > height - size) {
+    if (y < 0 || y > 600 - size) {
       directionY *= -1;
     }
   }
@@ -203,11 +195,11 @@ class RPSObject {
         y < other.y + other.size &&
         y + size > other.y;
   }
-
+ 
   // If has collisio, change the directions
   void redirect() {
     directionX *= -1;
-    directionY *= 1;
+    directionY *= -1;
   }
 
   // Get image of object
