@@ -171,7 +171,8 @@ class RPSObject {
   Random random = Random();
 
   double width = Get.width;
-  double height = Get.height - 50;
+  // -50 is for Noth in iPhones
+  double height = Get.height - AppBar().preferredSize.height - 50;
 
   // Initialize object
   RPSObject({required this.type}) {
